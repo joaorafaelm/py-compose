@@ -4,13 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+tox = "*"
+
 
 [packages]
 
-tox = "*"
 click = "*"
 pyyaml = "*"
 crayons = "*"
+"click-completion" = "*"
 
 
 [requires]

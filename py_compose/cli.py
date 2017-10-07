@@ -1,8 +1,11 @@
 import click
+import click_completion
 import crayons
 import sys
 from py_compose.configuration import Configuration
 
+
+click_completion.init()
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
