@@ -1,0 +1,10 @@
+*.sw[a-z]
+*.py[cox]
+*.egg-info
+.coverage
+
+.cache/
+.tox/
+.idea/
+
+htmlcov/

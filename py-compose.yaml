@@ -1,0 +1,12 @@
+services:
+    app:
+        python: 3.6
+        basedir: .
+        environment:
+            - DEBUG: "True"
+        requirements:
+            - requirements.txt
+        run:
+            - python manage.py runserver
+        test:
+            - py.test
