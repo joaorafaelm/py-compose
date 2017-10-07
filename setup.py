@@ -14,8 +14,11 @@ setup(
     url="https://py-compose.readthedocs.org",
     packages=['py_compose'],
     install_requires=requires,
-    entry_points={'console_scripts': [
-        'py-compose = py_compose.cli:main']},
+    entry_points={
+        'console_scripts': [
+            'py-compose = py_compose.cli:cli'
+        ]
+    },
     classifiers=[
         'Development Status :: 1 - Planning',
         'License :: OSI Approved :: MIT License',
