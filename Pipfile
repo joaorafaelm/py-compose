@@ -16,6 +16,7 @@ click = "*"
 pyyaml = "*"
 crayons = "*"
 "click-completion" = "*"
+pipenv = "*"
 
 [requires]
 python_version = "3.6"
