@@ -1,7 +1,7 @@
+import sys
 import click
 import click_completion
 import crayons
-import sys
 from py_compose.configuration import Configuration
 
 
@@ -12,23 +12,38 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.group(invoke_without_command=True, context_settings=CONTEXT_SETTINGS)
 @click.pass_context
 def cli(context):
+
     if context.invoked_subcommand is None:
         # Display help to user, if no commands were passed.
         click.echo(context.get_help())
 
     else:
         # Load up config file and pass along to the pipeline context
-        if Configuration.exists():
-            context.obj = Configuration()
+        conf = Configuration()
+        if conf.filename:
+            context.obj = conf
         else:
             click.echo(crayons.red('Configuration file not found.'))
             sys.exit(1)
 
 
-@click.command(help='Display the configuration file')
+@click.command(help='Display configuration file')
 @click.pass_context
 def config(context):
-    click.echo(context.obj.services)
+    conf = context.obj
+    click.echo('{}: {}'.format(crayons.blue('Filename'), conf.filename))
+    click.echo('{}: {}'.format(crayons.blue('Extension'), conf.extension))
+    click.echo('{}:'.format(crayons.blue('Services')))
+    for service in conf.services:
+        click.echo(crayons.white('\n · {}'.format(service), bold=True))
+        for attribute in (
+                'python', 'basedir', 'environment', 'requirements', 'run',
+                'test', 'depends_on'
+        ):
+            click.echo('    {}: {}'.format(
+                crayons.white(attribute, bold=True),
+                getattr(conf.services.get(service), attribute)
+            ))
 
 
 @click.command(help='Create and start services')
