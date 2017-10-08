@@ -1,12 +1,17 @@
 services:
     app:
         python: 3.6
-        basedir: .
+        basedir: ./
         environment:
-            - DEBUG: "True"
+            DEBUG: True
         requirements:
             - requirements.txt
         run:
             - python manage.py runserver
+        depends_on:
+            - oto app
         test:
             - py.test
+
+    oto app:
+      python: 2.7
