@@ -1,6 +1,6 @@
 from setuptools import setup
 
-requires = ['click', 'crayons', 'PyYAML']
+requires = ['click', 'crayons', 'PyYAML', 'click_completion']
 
 
 setup(
