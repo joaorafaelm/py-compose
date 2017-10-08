@@ -3,7 +3,7 @@ import click
 import click_completion
 import crayons
 from py_compose.configuration import Configuration
-
+from py_compose.settings import SERVICE_ATTRIBUTES
 
 click_completion.init()
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -36,10 +36,7 @@ def config(context):
     click.echo('{}:'.format(crayons.blue('Services')))
     for service in conf.services:
         click.echo(crayons.white('\n · {}'.format(service), bold=True))
-        for attribute in (
-                'python', 'basedir', 'environment', 'requirements', 'run',
-                'test', 'depends_on'
-        ):
+        for attribute in SERVICE_ATTRIBUTES:
             click.echo('    {}: {}'.format(
                 crayons.white(attribute, bold=True),
                 getattr(conf.services.get(service), attribute)

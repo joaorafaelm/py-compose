@@ -1,6 +1,7 @@
 from os.path import isfile
 from py_compose.settings import (
-    CONFIG_FILENAME, SUPORTED_EXTENSIONS, PARSERS
+    CONFIG_FILENAME, SUPORTED_EXTENSIONS, PARSERS,
+    SERVICE_ATTRIBUTES
 )
 
 
@@ -14,13 +15,17 @@ class Configuration:
     ):
         if self.exists(config_file, extensions):
             self.config = self._parse()
-            self.services = self._cast_services()
+            self._cast_services()
 
     def _cast_services(self):
         services = self.config.get('services')
-        return {
-            s: Service(**services.get(s)) for s in services
-        }
+        for name, attributes in services.items():
+            filtered_attributes = {
+                key: attributes.get(key) for key in SERVICE_ATTRIBUTES
+            }
+            self.services.update({
+                name: Service(name, self, **filtered_attributes)
+            })
 
     def _parse(self):
         return PARSERS.get(self.extension)(
@@ -40,9 +45,12 @@ class Configuration:
 class Service:
 
     def __init__(
-            self, python=2.7, basedir=None, requirements=None,
-            environment=None, run=None, test=None, depends_on=None
+            self, name=None, config=None, python=2.7, basedir=None,
+            requirements=None, environment=None, run=None, test=None,
+            depends_on=None
     ):
+        self.name = name
+        self.config = config
         self.python = python
         self.basedir = basedir
         self.requirements = requirements
@@ -50,6 +58,13 @@ class Service:
         self.run = run
         self.test = test
         self.depends_on = depends_on
+
+    def __repr__(self):
+        return '<%s %s object at %s>' % (
+            self.__class__.__name__,
+            self.name,
+            hex(id(self))
+        )
 
     def install_requirements(self):
         pass

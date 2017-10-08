@@ -12,3 +12,8 @@ PARSERS = {
     # JSON
     'json': json_loader
 }
+
+SERVICE_ATTRIBUTES = (
+    'python', 'basedir', 'environment', 'requirements', 'run',
+    'test', 'depends_on'
+)
