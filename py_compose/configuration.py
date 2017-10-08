@@ -1,21 +1,55 @@
 from os.path import isfile
-import yaml
-
-CONFIG_FILE = 'py-compose.yaml'
+from py_compose.settings import (
+    CONFIG_FILENAME, SUPORTED_EXTENSIONS, PARSERS
+)
 
 
 class Configuration:
+    filename = None
+    extension = None
     services = {}
 
-    def __init__(self, config_file=CONFIG_FILE):
-        if self.exists(config_file):
-            config = yaml.load(open(CONFIG_FILE, 'r'))
-            self.services = config.get('services')
+    def __init__(
+            self, config_file=CONFIG_FILENAME, extensions=SUPORTED_EXTENSIONS
+    ):
+        if self.exists(config_file, extensions):
+            self.config = self._parse()
+            self.services = self._cast_services()
 
-    @staticmethod
-    def exists(config_file=CONFIG_FILE):
-        return isfile(config_file)
+    def _cast_services(self):
+        services = self.config.get('services')
+        return {
+            s: Service(**services.get(s)) for s in services
+        }
+
+    def _parse(self):
+        return PARSERS.get(self.extension)(
+            open(self.filename, 'r')
+        )
+
+    def exists(self, filename, extensions):
+        for extension in extensions:
+            file = '{}.{}'.format(filename, extension)
+            if isfile(file):
+                self.filename = file
+                self.extension = extension
+                return True
+        return False
 
 
 class Service:
-    pass
+
+    def __init__(
+            self, python=2.7, basedir=None, requirements=None,
+            environment=None, run=None, test=None, depends_on=None
+    ):
+        self.python = python
+        self.basedir = basedir
+        self.requirements = requirements
+        self.environment = environment
+        self.run = run
+        self.test = test
+        self.depends_on = depends_on
+
+    def install_requirements(self):
+        pass
