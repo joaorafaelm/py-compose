@@ -1,7 +1,7 @@
 from setuptools import setup
 
 requires = ['click', 'crayons', 'PyYAML', 'click_completion']
-
+test_requires = ['pytest']
 
 setup(
     name="py-compose",
@@ -14,6 +14,7 @@ setup(
     url="https://py-compose.readthedocs.org",
     packages=['py_compose'],
     install_requires=requires,
+    test_requires=test_requires,
     entry_points={
         'console_scripts': [
             'py-compose = py_compose.cli:cli'
