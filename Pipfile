@@ -13,10 +13,9 @@ pytest = "*"
 [packages]
 
 click = "*"
-pyyaml = "*"
+PyYAML = "*"
 crayons = "*"
 "click-completion" = "*"
-pipenv = "*"
 
 [requires]
 python_version = "3.6"
