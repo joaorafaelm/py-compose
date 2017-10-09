@@ -1,11 +1,10 @@
 services:
     app:
-        python: 3.6
         basedir: ./
         environment:
             DEBUG: True
-        requirements:
-            - requirements.txt
+        build:
+            - pipenv install -r requirements.txt --python 3.6.3
         run:
             - python manage.py runserver
         depends_on:
@@ -14,4 +13,3 @@ services:
             - py.test
 
     oto app:
-      python: 2.7
