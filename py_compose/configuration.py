@@ -45,16 +45,15 @@ class Configuration:
 class Service:
 
     def __init__(
-            self, name=None, config=None, python=2.7, basedir=None,
-            requirements=None, environment=None, run=None, test=None,
+            self, name=None, config=None, basedir=None,
+            build=None, environment=None, run=None, test=None,
             depends_on=None
     ):
         self.name = name
         self.config = config
-        self.python = python
         self.basedir = basedir
-        self.requirements = requirements
         self.environment = environment
+        self.build = build
         self.run = run
         self.test = test
         self.depends_on = depends_on

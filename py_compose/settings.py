@@ -14,6 +14,6 @@ PARSERS = {
 }
 
 SERVICE_ATTRIBUTES = (
-    'python', 'basedir', 'environment', 'requirements', 'run',
+    'basedir', 'environment', 'requirements', 'run',
     'test', 'depends_on'
 )

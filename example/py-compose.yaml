@@ -12,4 +12,5 @@ services:
         test:
             - py.test
 
-    oto app:
+    otoapp:
+        basedir: ./
