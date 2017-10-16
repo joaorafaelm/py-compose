@@ -1,16 +1,19 @@
 services:
     app:
-        basedir: ./
+        basedir: app
         environment:
             DEBUG: True
+            SOME_VAR: "it works on ma machine"
         build:
-            - pipenv install -r requirements.txt --python 3.6.3
+            - virtualenv venv
+            - ./venv/bin/pip install -r requirements.txt
+            - echo $SOME_VAR
         run:
-            - python manage.py runserver
+            - ./venv/bin/python example.py
         depends_on:
             - otoapp
         test:
             - py.test
 
     otoapp:
-        basedir: ./
+        basedir: .
