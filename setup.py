@@ -1,6 +1,6 @@
 from setuptools import setup
 
-requires = ['click', 'crayons', 'PyYAML', 'click_completion']
+requires = ['click', 'crayons', 'PyYAML', 'click_completion', 'halo']
 test_requires = ['pytest']
 
 setup(
