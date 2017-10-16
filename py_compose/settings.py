@@ -17,3 +17,7 @@ SERVICE_ATTRIBUTES = (
     'basedir', 'environment', 'build', 'run',
     'test', 'depends_on'
 )
+
+
+SUCCESS_EXIT_CODE = 0
+ERROR_EXIT_CODE = 1
