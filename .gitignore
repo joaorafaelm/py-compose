@@ -7,4 +7,6 @@
 .tox/
 .idea/
 
+*venv/
+*.log
 htmlcov/
