@@ -13,9 +13,10 @@ pytest = "*"
 [packages]
 
 click = "*"
-PyYAML = "*"
+pyyaml = "*"
 crayons = "*"
 "click-completion" = "*"
+halo = "*"
 
 [requires]
 python_version = "3.6"
