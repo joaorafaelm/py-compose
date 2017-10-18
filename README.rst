@@ -4,7 +4,7 @@ py-compose
 .. image:: https://travis-ci.org/joaorafaelm/py-compose.svg?branch=master
    :target: https://travis-ci.org/joaorafaelm/py-compose
 
-py-compose is a management tool for microservices-like or interdependent projects. With py-compose, you can declare how your applications depend on each other and how should they build and run.
+py-compose is a management tool for microservices-like or interdependent projects. With py-compose, you can declare which applications depend on each other and how they should build and run.
 
 Usage
 =====
@@ -23,7 +23,7 @@ To install, you only need to run ``pip install py-compose``.
 Configuration
 -------------
 
-To configure, you need to create a ``py-compose.yaml`` with the instructions showing how py-compose should build, run and test your applications. You can also define if an app depends on others. The file content should looks like this:
+To configure, you need to create a ``py-compose.yaml`` with the instructions showing how py-compose should build, run and test your applications. You can also define if an app depends on others. The file content should look like this:
 
 .. code:: yaml
 
@@ -58,7 +58,7 @@ To configure, you need to create a ``py-compose.yaml`` with the instructions sho
 Where:
 
 basedir
-    the path where py-compose will run its commands agains the declared app.
+    the path where py-compose will run its commands against the declared app.
 
 environment
     environment variables to use with the declared app.
