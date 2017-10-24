@@ -14,6 +14,21 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 spinner = Halo(spinner='dots')
 
 
+class ServiceName(click.ParamType):
+    name = 'service_name'
+
+    def convert(self, value, param, context):
+        configuration = context.obj
+
+        if value not in configuration.services:
+            self.fail('"{}" is an invalid service name'.format(value))
+
+        return value
+
+
+SERVICE_NAME = ServiceName()
+
+
 @click.group(invoke_without_command=True, context_settings=CONTEXT_SETTINGS)
 @click.option('--file', default=CONFIG_FILENAME, nargs=1, help="Config file.")
 @click.pass_context
@@ -50,22 +65,24 @@ def config(context):
 
 
 @click.command(help='Create and start services')
-@click.argument('service_name', default=False)
+@click.argument('service_names', nargs=-1, type=SERVICE_NAME)
 @click.pass_context
-def up(context, service_name=False):
-    context.invoke(build, service_name=service_name)
+def up(context, service_names):
+    context.invoke(build, service_names=service_names)
 
 
 @click.command(help='Create services')
-@click.argument('service_name', default=False)
+@click.argument('service_names', nargs=-1, type=SERVICE_NAME)
 @click.pass_context
-def build(context, service_name=False):
+def build(context, service_names):
     configuration = context.obj
     stage = 'build'
 
     # Filter services
-    services = [configuration.services.get(service_name)] \
-        if service_name else configuration.services.values()
+    if service_names:
+        services = configuration.services.filter(service_names).values()
+    else:
+        services = configuration.services.values()
 
     # Initiate subprocesses
     [s.exec(stage) for s in services]
@@ -73,21 +90,23 @@ def build(context, service_name=False):
     # Wait for all processes to finish
     for service in services:
         if service.subprocess:
-            spinner.start(text=crayons.white('Executing build stage.'))
+            msg = '{} | Executing build stage.'
+            spinner.start(text=crayons.white(msg.format(service.name)))
 
             service.subprocess.wait()
 
             if service.subprocess.returncode == SUCCESS_EXIT_CODE:
-                spinner.succeed(crayons.green(
-                    'Successfully executed build stage'
-                ))
+                msg = '{} | Successfully executed build stage.'
+                spinner.succeed(crayons.green(msg.format(service.name)))
             else:
-                spinner.fail(crayons.red(
-                    'Error while executing build stage. '
+                msg = (
+                    '{} | Error while executing build stage. '
                     'Checkout the error log for more details.'
-                ))
+                )
+                spinner.fail(crayons.red(msg.format(service.name)))
         else:
-            click.echo(crayons.yellow('no build stage defined'))
+            msg = '{} | No build stage defined.'
+            click.echo(crayons.yellow(msg.format(service.name)))
 
 
 cli.add_command(up)
